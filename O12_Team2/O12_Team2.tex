@@ -1,0 +1,713 @@
+\documentclass{ieeeojies}
+\documentclass[]{article}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{array, multirow}
+\usepackage{authblk}
+
+\def\BibTeX{{\rm B\kern-.05eoom{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Forecasting some famous car company stock by using statistic, machine learning and deep learning model}
+
+
+\author[1]{\large\textbf{Tran Huu Manh}}
+\author[2]{\large\textbf{Pham Duc Manh}}
+\author[3]{\large\textbf{Nguyen Minh Thong}}
+\affil[1]{Vietname National University of Ho Chi Minh, University of Information Technology, Ho Chi Minh City (g-mail: 21522331@gm.uit.edu.vn)}
+\affil[2]{Vietname National University of Ho Chi Minh, University of Information Technology, Ho Chi Minh City (g-mail: 21522330@gm.uit.edu.vn)}
+\affil[3]{Vietname National University of Ho Chi Minh, University of Information Technology, Ho Chi Minh City (g-mail: 21522644@gm.uit.edu.vn)}
+\setcounter{Maxaffil}{0}
+\renewcommand\Affilfont{\itshape\small}
+
+\markboth
+{Author \headeretal: Manh T. H., Manh P. D., Thong N. M.}
+{Author \headeretal: Manh T. H., Manh P. D., Thong N. M.}
+
+\begin{abstract}
+This brief study delves into the dynamic landscape of car stocks, examining the trends, influences, and key factors shaping the financial performance of automotive companies in the stock market. From the impact of technological advancements and industry disruptions to macroeconomic factors and global demand shifts, this overview aims to provide a concise yet insightful glimpse into the forces driving fluctuations in car stock values. By exploring key indicators and recent market developments, readers will gain a foundational understanding of the current state of car stocks and the broader implications for investors and stakeholders in the automotive sector.
+\end{abstract}
+
+\begin{keywords}
+Linear regression, SVR, LSTM, ARIMA, SARIMA, DLM, Holt-Winters, Stock prediction
+\end{keywords}
+
+\titlepgskip=-15pt
+
+\maketitle
+
+\section{Introduction}
+\subsection{Introduction}
+\hspace{0.3cm} The automotive industry stands at the crossroads of
+innovation and market dynamics, with its trajectory intricately
+tied to global economic shifts, technological breakthroughs,
+and consumer preferences. One of the key barometers
+reflecting the health of this industry is the performance of car
+stocks in the financial markets. Investors, analysts, and
+enthusiasts alike closely monitor these stocks as they
+encapsulate the broader trends and challenges facing
+automotive companies. This introduction sets the stage for a
+closer examination of the multifaceted world of car stocks,
+aiming to unravel the factors that contribute to their volatility
+and growth. From the advent of electric vehicles and
+autonomous driving technologies to the influence of
+geopolitical events on oil prices, a myriad of elements shape
+the intricate tapestry of the automotive market. This
+exploration seeks to provide a concise yet comprehensive
+overview, shedding light on the current state of car stocks and
+offering insights into the forces propelling this crucial sector
+into the future. As we embark on this journey, we invite
+readers to navigate the nuanced landscape of car stocks, where
+financial markets meet the evolving contours of an industry in
+constant flux.
+
+
+\subsection{Related Document}
+\hspace{0.3cm}G. Eason, B. Noble, and I. N. Sneddon, “On certain integrals of
+Lipschitz-Hankel type involving products of Bessel functions,” Phil.
+Trans. Roy. Soc. London, vol. A247, pp. 529–551, April 1955.
+(references)
+
+J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol.
+2. Oxford: Clarendon, 1892, pp.68–73.
+
+I. S. Jacobs and C. P. Bean, “Fine particles, thin films and exchange
+anisotropy,” in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New
+York: Academic, 1963, pp. 271–350.
+
+K. Elissa, “Title of paper if known,” unpublished.
+
+R. Nicole, “Title of paper with only first word capitalized,” J. Name
+Stand. Abbrev., in press.
+
+Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, “Electron spectroscopy
+studies on magneto-optical media and plastic substrate interface,” IEEE
+Transl. J. Magn. Japan, vol. 2, pp. 740–741, August 1987 [Digests 9th
+Annual Conf. Magnetics Japan, p. 301, 1982].
+
+ M. Young, The Technical Writer’s Handbook. Mill Valley, CA:
+University Science, 1989.
+
+Stock Market Forecasting using Empirical Mode 
+Decomposition with Holt-Winter
+Ahmad M. Awajan 1,b) , Mohd Tahir Ismail2,a) and S. AL Wadi 3, c)
+
+Seasonal Autoregressive Integrated Moving Average Model for 
+Precipitation Time Series 
+1Xinghua Chang, 2Meng Gao, 1Yan Wang and 2Xiyong Hou
+
+L--‐Stern Group Ly Pham , Time Series Analysis with ARIMA – ARCH/GARCH model in R
+
+STUDY OF EFFECTIVENESS OF TIME SERIES MODELING (ARIMA) IN FORECASTING STOCK PRICES 
+Prapanna Mondal1, Labani Shit1 and Saptarsi Goswami2
+Higher Education: Handbook of Theory and Research
+\subsection{Material}
+
+1. The dataset
+
+\hspace{0.3cm} The most important thing about our article, which includes Ford (F), Tesla (TSLA), and Toyota (TM) company stock. These are one of the most popular car branches worldwide. We collected them from the Yahoo Finance website where the data is updated continuously for the time being, which can also help us to check the accuracy of our prediction. The data started from 1/3/2012 and ends at 7/12/2023; they also share the same characteristics, which are:
+
+
+\begin{center}
+    \includegraphics[scale = 0.95]{image/image.png}
+\end{center}
+
+The purpose of the article is to predict the Close prices, so only descriptive statistical data relating to column "Close" will be listed.
+\\
+•	Ford (F)
+
+\hspace{0.5cm}a)	Detail statical: 
+
+\begin{center}
+    \includegraphics[scale = 0.8]{image/image1.png}
+\end{center}
+
+b) Visualization
+
+\includegraphics[scale = 1.1]{image/image4.png}
+\includegraphics[scale = 1.1]{image/image5.png}
+
+•	Tesla (TSLA)
+
+\hspace{0.5cm}a)	Detail statical:
+
+\includegraphics[scale = 0.5]{image/image8.png}
+
+\hspace{0.5cm}b)	Visualization:
+
+\includegraphics[scale = 0.4]{image/image6.png}
+
+\includegraphics[scale = 0.38]{image/image7.png}
+
+•	Toyota (TM)
+
+\hspace{0.5cm}a)	Detail statical:
+
+\includegraphics[scale = 0.5]{image/image11.png}
+
+\hspace{0.5cm}b)	Visualization:
+
+\includegraphics[scale = 0.4]{image/image9.png}
+
+\includegraphics[scale = 0.38]{image/image10.png}
+
+2. Model Evaluation Metrics:
+
+MAE (Mean Absolute Error) is a metric commonly used to evaluate the accuracy of a predictive model by measuring the average absolute difference between the predicted and actual values.
+
+RMSE (Root Mean Squared Error) is a popular metric used
+to measure the average deviation between the actual
+observations and the predicted values. It calculates the square
+root of the average of the squared differences between the actual
+and predicted values.
+
+MAPE (Mean Absolute Percentage Error) is a metric that
+measures the average percentage difference between the actual
+and predicted values. It calculates the mean of the absolute
+percentage differences between the actual and predicted values.
+
+$$MAE = \frac{1}{n}\sum_{i=1}^{n} |y_i - \hat{y_i}|$$
+$$RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^{n} (y_i - \hat{y_i})^2}$$
+$$MAPE = \frac{1}{n} \sum_{i=1}^{n} \left| \frac{y_i - \hat{y}_i}{y_i} \right| \times 100\%$$
+
+where: 
+
+$y_i$ is the actual observations time series.
+
+$\hat{y}_i$ is the estimated or forecasted time series.
+
+N is the number of data points.
+
+
+\section{METHODS}
+\hspace{0.3cm} These are the statistics, machine learning and deep learning models that we used to have a scope view of the data and predict the future stock.
+
+\subsection{Linear Regression}
+\hspace{0.3cm} Linear regression is a statistical technique used to model the connection between a dependent variable and one or more independent variables. The method assumes a linear relationship and seeks to determine the optimal straight line that minimizes the disparity between predicted and observed values. Linear regression is applied for predicting outcomes and comprehending the influence of variables in areas such as economics, finance, and machine learning. This approach, introduced by the eminent statistician Sir Francis Galton in the late 19th century, aims to establish a linear equation that represents the relationship. The formula for linear regression is typically expressed as an equation describing this best-fit line which is known as:
+$$y = \beta_0 + \beta_1X + \varepsilon$$
+Where:
+\begin{itemize}
+    \item y is the predicted value of the dependent variable (y) for any given value of the independent variable (x).
+    \item $\beta0$ is the intercept, the predicted value of y when the x is 0.
+    \item $\beta1$ is the regression coefficient – how much we expect y to change as X increases.
+    \item X is the regression variable (the variable we expected to influence y).
+    \item $\varepsilon$ is the error of the estimate, or how much variation there is in our estimate of the regression coefficient.
+\end{itemize}
+
+\subsection{ARIMA}
+
+\hspace{0.3cm} ARIMA (Autoregressive Integrated Moving Average) is a popular \textit{time series forecasting} method that combines \textit{autoregression} \textbf{(AR)}, \textit{differencing} \textbf{(I)}, and \textit{moving averages} \textbf{(MA)}. It is widely used for predicting future points in a time series by analyzing past data points. The AR component models the dependence of the current value on past values, the differencing component removes trends and seasonality, and the MA component models the dependence of the current value on past errors.
+
+ While:
+
+Time series forecasting: Is a method used to predict future values based on past observations in a time-ordered sequence. This type of forecasting is applicable to data points that are collected or recorded over a period.
+
+Box and Jenkins introduced ARIMA in the 1970s, expanding upon the Box-Jenkins methodology for the analysis of time series data. The model can be known as:
+\begin{align*}
+    x_t & = c + \phi_1 x_{t-1} + \phi_2 x_{t-2} + \ldots + \phi_p x_{t-p} \\
+        & \quad + \theta_1 \varepsilon_{t-1} + \theta_2 \varepsilon_{t-2} + \ldots + \theta_q \varepsilon_{t-q}
+\end{align*}
+
+where:
+\begin{itemize}
+    \item The variable \(x_t\) represents the observed data at time \(t\).
+    \item c is a constant.
+    \item p is the order of the autoregressive component.
+    \item \(\phi\) are the autoregressive coefficients.
+    \item q is the order of the moving average component.
+    \item \( \theta \) are the moving average coefficients
+    \item $\varepsilon$ is the error term at time t.
+\end{itemize}
+
+\hspace{0.3cm}According to Box-Jenkins method, in ARIMA (p, d, q) the value of p and q should be less than 2 or total number of parameters should be less than 3 [5]. The value of the ARIMA parameters (p, d, q) for AR can be calculated by the Autocorrelation Function (ACF) and the Partial Autocorrelation Function (PACF). These functions help to estimate the parameters that can be used to forecast data using the ARIMA model.
+
+\subsection{SVR}
+
+\hspace{0.3cm} A Support Vector Regression (SVR) is a type of machine learning algorithm used for regression analysis. The goal of SVR is to find a function that approximates the relationship between the input variables and a continuous target variable, while minimizing the prediction error.
+
+SVR seeks to find a hyperplane that best fits the data points in a continuous space. This is achieved by mapping the input variables to a high-dimensional feature space and finding the hyperplane that maximizes the margin (distance) between the hyperplane and the closest data points, while also minimizing the prediction error.
+
+There are a few important parameters of SVR that you should be aware of before proceeding further:
+\begin{itemize}
+\item \textbf{Kernel}: A kernel helps us find a hyperplane in higher dimensional space without increasing the computational cost.
+\item \textbf{Hyperplane}: This is the line that will be used to predict the continuous output
+Support Vector Regression is similar to Linear Regression in that the equation of the line is:
+\end{itemize}
+$$y = wx + b$$
+\hspace{0.3cm}In SVR, this straight line is referred to as hyperplane. The data points on either side of the hyperplane that are closest to the hyperplane are called Support Vectors which are used to plot the boundary line.
+\subsection{LSTM}
+
+\hspace{0.3cm}LSTM (Long short-term memory) is a type of recurrent neural network (RNN) that was introduced by Hochreiter and Schmid Huber in 1997. It was designed to overcome the limitations of traditional RNN models in capturing and remembering long-term dependencies in sequential data.
+
+The idea of LSTM revolves around the concept of a cell state or memory. The cell state acts as a conveyor belt, allowing information to flow through the network while preserving important information over long sequences. The LSTM cell consists of several components: an input gate, a forget gate, an output gate, and a cell update mechanism.
+
+\includegraphics[scale = 0.6]{image/image2.png}
+
+The formulas for computing the different
+components of the LSTM cell are as follows:
+
+
+    \text{Input gate:} \quad i_t = \sigma(W_i \ast [h_{t-1}, x_t] + b_i)
+    
+    \text{Forget gate:} \quad & f_t = \sigma(W_f \ast [h_{t-1}, x_t] + b_f) 
+    
+    \text{Cell update:} \quad & \tilde{C}_t = \tanh(W_c \ast [h_{t-1}, x_t] + b_c) 
+    
+    \text{Cell state:} \quad & C_t = f_t \ast C_{t-1} + i_t \ast \tilde{C}_t 
+    
+    \text{Output gate:} \quad & o_t = \sigma(W_o \ast [h_{t-1}, x_t] + b_o) 
+    
+    \text{Hidden state:} \quad & h_t = o_t \ast \tanh(C_t)
+
+\( W_i \), \( W_f \),\( W_c \),\( W_o \) are the weight of the matrix with \(h_t-1\) is the hidden state and \(x_t\) is the input at time step t are its parameters. \(b_i\), \(b_f\), \(b_c\), \(b_o\)
+\subsection{SARIMA}
+
+\hspace{0.3cm}We all know that ARIMA is famous for supporting both
+autoregressive and moving average elements. The integrated
+element refers to differencing allowing the method to support
+time series data with a trend. However, it has a problem that is
+not supporting for the seasonal data which is a time series with
+a repeating cycle. Because of that Seasonal Autoregressive
+Integrated Moving Average, SARIMA or Seasonal ARIMA, is
+created as an extension of ARIMA that explicitly supports
+univariate time series data with a seasonal component.
+
+The trend element of SARIMA is the same as the ARIMA
+model (p, d, q); however, there are four seasonal elements that
+are not part of ARIMA that must be configured; they are:
+
+P: Seasonal autoregressive order.
+
+D: Seasonal difference order.
+
+Q: Seasonal moving average order.
+
+s: The number of time steps for a single seasonal period.
+
+Together, the notation for a SARIMA model is specified as:
+
+\hspace{2cm}   SARIMA(p,d,q)(P,D,Q)s
+
+\includegraphics[scale = 0.85]{image/image3.png}
+
+Where:
+
+\hspace{0.3cm}w_t & : \text{Nonstationary time series} 
+
+\hspace{0.3cm}S & : \text{The period of the time series} 
+    
+\hspace{0.3cm}\phi(B) & : \text{Ordinary autoregressive components} 
+    
+\hspace{0.3cm}\theta(B) & : \text{Ordinary moving average components} 
+    
+\hspace{0.3cm}\Phi_p(B^s) & : \text{Seasonal autoregressive components} 
+    
+\hspace{0.3cm}\Theta_Q(B^s) & : \text{Seasonal moving average components} 
+    
+\hspace{0.3cm}\nabla^d & : \text{Ordinary difference components} 
+    
+\hspace{0.3cm}\nabla^D_s & : \text{Seasonal difference components} 
+    
+\hspace{0.3cm}B & : \text{Backshift operator}
+
+The expressions are shown as follows:
+
+    \hspace{0.3cm} \phi (B) & = 1 - \phi_1 B - \phi_2 B^2 - \ldots - \phi_p B^p 
+    
+    \hspace{0.3cm} \Phi_P(B^s) & = 1 - \Phi_1 B^s - \Phi_2 B^{2s} - \ldots - \Phi_P B^{Ps} 
+    
+    \hspace{0.3cm} \theta B & = 1 + \theta_1 B + \theta_2 B^2 + \ldots + \theta_q B^q
+    
+    \hspace{0.3cm} \Theta_Q(B^s) & = 1 + \Theta_1 B^s + \Theta_2 B^{2s} + \ldots + \Theta_Q B^{Qs} 
+    
+    \hspace{0.3cm} \nabla^d & = (1 - B)^d 
+    
+    \hspace{0.3cm} \nabla^{D_s} & = (1 - B^s) D 
+    
+    \hspace{0.3cm} B^k x_t & = x_t - k
+\subsection{DLM}
+\hspace{0.3cm}Dynamic linear models (DLM) offer a very generic
+framework to analyze time series data. Many classical time
+series models can be formulated as DLMs, including ARMA
+models and standard multiple linear regression models. The
+models can be seen as general regression models where the
+coefficients can vary in time.
+
+It defines a very general class of non-stationary time series
+models. DLMs may include terms to model trends, seasonality,
+covariates, and autoregressive components. The main goals
+are short-term forecasting, intervention analysis and
+monitoring. 
+
+A Normal DLM is defined with a pair of equations:
+\[ Y_t = F_t' \theta_t + \varepsilon_t \]
+\[ \theta_t = G_t \theta_{t-1} + \omega_t \]
+
+With:
+
+
+$Y_t$ is the observation at time t.
+
+$\theta_t$ = ($\theta_{t,1}$,$ \ldots$, $\theta_{p,1}$)' is the vector of parameters at time t and of dimension p × 1.
+
+$F_t$' is the row vector (dimension 1 × p) of covariates at time t.
+
+$G_t$ is a matrix of dimension p × p known as evolution or transition matrix.
+
+$\varepsilon_t$ is the observation error at time t. 
+
+$\omega_t$ is the evolution error (p × 1 vector).
+
+\subsection{GAN-LSTM}
+
+\hspace{0.3cm}Generative adversarial networks (GANs) are an exciting
+recent innovation in machine learning. GANs are generative
+models: they create new data instances that resemble your
+training data.
+
+What does "generative" mean in the name "Generative
+Adversarial Network"? "\underline{Generative}" describes a class of
+statistical models that contrasts with \underline{discriminative} models.
+\begin{itemize}
+    \item Informally:
+\end{itemize}
+
+
+\textbf{Generative models} can generate new data instances.
+\textbf{Discriminative models} discriminate between different kinds of data instances.
+
+
+\begin{itemize}
+    \item  More formally, given a set of data instances X and a set of labels Y:
+\end{itemize}
+
+Generative models capture the joint probability p (X, Y), or just p(X) if there are no labels.
+
+Discriminative models capture the conditional probability p (Y | X).
+
+To be able to know more about GAN, first, we have to understand what \textbf{Game theory} is.
+
+Game theory is the study of mathematical models of strategic interactions among \underline{rational agents}.
+
+With:
+
+\textbf{A rational agent} or rational being is a person or entity that
+always aims to perform optimal actions based on given
+premises and information. A rational agent can be anything
+that makes decisions, typically a person, firm, machine, or
+software.
+
+As a method of applied mathematics, game theory has been used to study a wide variety of human and animal behaviors. It was initially developed in economics to understand a large collection of economic behaviors, including behaviors of firms, markets, and consumers. The primary use of game theory is to describe and model how human populations behave.
+
+The original GAN is defined as the following game:
+
+With:
+
+Each probability space $(\Omega, \mu_{\text{ref}})$ defines a GAN game.
+
+There are 2 players: generator and discriminator.
+
+The generator's strategy set is p($\Omega$) , the set of all probability measures $\mu_G$ on $\Omega$.
+
+The discriminator's strategy set is the set of Markov kernels $\mu_D$ : $\Omega \to p[0,1]$.
+
+In this adversarial setting, the generator aims to produce data instances that are indistinguishable from real data, while the discriminator aims to correctly distinguish between real and generated data. The game reaches equilibrium when the generator creates data that is so realistic that the discriminator cannot reliably differentiate between real and generated instances.
+
+This adversarial training process drives the improvement of both the generator and the discriminator, resulting in the generation of high-quality synthetic data. The dynamics of this game capture the essence of the GAN training process, where the generator and discriminator continually adapt and evolve in response to each other's strategies.
+
+\subsection{HOLT}
+
+Holt-Winters Exponential Smoothing, also known as Triple Exponential Smoothing, is a statistical method for time series forecasting. It was proposed by Peter R. Holt, Charles C. Holt, and Thomas P. Winters in the early 1960s. This method is particularly useful for forecasting data with seasonality and trend components.
+
+The Holt-Winters method extends simple exponential smoothing by incorporating three smoothing equations: one for the level (average), one for the trend, and one for the seasonality. These three components are combined to make predictions for future values in a time series.
+
+The three smoothing equations are as follows:
+
+L_t = \alpha \cdot Y_t + (1 - \alpha) \cdot (L_{t-1} + T_{t-1})
+
+\text{where:} \quad & 
+
+\hspace{0.5cm}L_t & \text{ is the level at time } t.
+
+\hspace{0.5cm}Y_t & \text{ is the observed value at time } t.
+
+\hspace{0.5cm}L_{t-1} & \text{ is the level at time } t-1.
+
+\hspace{0.5cm}T_{t-1} & \text{ is the trend at time } t-1.
+
+\hspace{0.5cm}\alpha & \text{ is the smoothing parameter for the level.}
+
+
+T_t & = \beta \cdot (L_t - L_{t-1}) + (1 - \beta) \cdot T_{t-1} 
+
+\text{where:} \quad & 
+
+\hspace{0.5cm}T_t & \text{ is the trend at time } t.
+
+\hspace{0.5cm}L_t & \text{ is the level at time } t.
+
+\hspace{0.5cm}L_{t-1} & \text{ is the level at time } t-1.
+
+\hspace{0.5cm}T_{t-1} & \text{ is the trend at time } t-1.
+
+\hspace{0.5cm}\beta & \text{ is the smoothing parameter for the trend.}
+
+
+S_t & = \gamma \cdot (Y_t - L_t) + (1 - \gamma) \cdot S_{t-m} 
+
+\text{where} \quad & 
+
+\hspace{0.5cm}S_t & \text{ is the seasonal component at time } t.
+
+\hspace{0.5cm}Y_t & \text{ is the observed value at time } t.
+
+\hspace{0.5cm}L_t & \text{ is the level at time } t.
+
+\hspace{0.5cm}S_{t-m} & \text{ is the seasonal component in the previous year.} 
+
+\hspace{0.5cm}\gamma & \text{ is the smoothing parameter for the seasonal component.}
+
+The forecast for the next period (h periods ahead) is then given by the sum of the level, trend, and seasonal components:
+
+\[\hat{Y}_{t+h} = L_t + h \cdot T_t + S_{t-m+h}\]
+
+The Holt-Winters method is suitable for time series data where there is a clear trend and seasonality, and it allows for capturing and predicting these patterns in the data. The choice of smoothing parameters (\(\alpha\), \(\beta\), and \(\gamma\)) depends on the characteristics of the time series and is often determined through optimization techniques.
+
+
+\subsection{Figures and Tables}
+1) Model Setting:
+
+Linear Regression:
+
+    \includegraphics[scale = 0.24]{image/LR8-1-1-F.png}
+    \includegraphics[scale = 0.24]{image/LR7-2-1-F.png}
+    
+    \includegraphics[scale = 0.24]{image/LR6-2-2-F.png}
+    \hspace{0.1cm}\includegraphics[scale = 0.242]{image/LR8-1-1-TSLA.png}
+    
+    \includegraphics[scale = 0.24]{image/LR7-2-1-TSLA.png}
+    \hspace{0.15cm}\includegraphics[scale = 0.241]{image/LR6-2-2-TSLA.png}
+    
+    \includegraphics[scale = 0.24]{image/LR8-1-1-To.png}
+    \hspace{0.1cm}\includegraphics[scale = 0.24]{image/LR7-2-1-To.png}
+    
+    \includegraphics[scale = 0.24]{image/LR6-2-2-To.png}
+
+ARIMA:
+
+    \includegraphics[scale = 0.24]{image/A8-1-1-F.png}
+    \includegraphics[scale = 0.24]{image/A7-2-1-F.png}
+    
+    \includegraphics[scale = 0.24]{image/A6-2-2-F.png}
+    \hspace{0.1cm}\includegraphics[scale = 0.242]{image/A8-1-1-TSLA.png}
+    
+    \includegraphics[scale = 0.24]{image/A7-2-1-TSLA.png}
+    \hspace{0.07cm}\includegraphics[scale = 0.241]{image/A6-2-2-TSLA.png}
+    
+    \includegraphics[scale = 0.24]{image/A8-1-1-To.png}
+    \hspace{0.1cm}\includegraphics[scale = 0.24]{image/A7-2-1-To.png}
+    
+    \includegraphics[scale = 0.24]{image/A6-2-2-To.png}
+
+SARIMA: 
+
+    \includegraphics[scale = 0.24]{image/SA8-1-1-F.png}
+    \includegraphics[scale = 0.24]{image/SA7-2-1-F.png}
+    
+    \includegraphics[scale = 0.24]{image/SA6-2-2-F.png}
+    \hspace{0.1cm}\includegraphics[scale = 0.242]{image/SA8-1-1-TSLA.png}
+    
+    \includegraphics[scale = 0.24]{image/SA7-2-1-TSLA.png}
+    \hspace{0.15cm}\includegraphics[scale = 0.241]{image/SA6-2-2-TSLA.png}
+    
+    \includegraphics[scale = 0.24]{image/SA8-1-1-To.png}
+    \hspace{0.1cm}\includegraphics[scale = 0.24]{image/SA7-2-1-To.png}
+    
+    \includegraphics[scale = 0.24]{image/SA6-2-2-To.png}
+
+SVR: 
+
+    \includegraphics[scale = 0.24]{image/SVR8-1-1-F.png}
+    \hspace{0.2cm}\includegraphics[scale = 0.24]{image/SVR7-2-1-F.png}
+    
+    \includegraphics[scale = 0.24]{image/SVR6-2-2-F.png}
+    \hspace{0.1cm}\includegraphics[scale = 0.242]{image/SVR8-1-1-TSLA.png}
+    
+    \includegraphics[scale = 0.24]{image/SVR7-2-1-TSLA.png}
+    \hspace{0.1cm}\includegraphics[scale = 0.241]{image/SVR6-2-2-TSLA.png}
+    
+    \includegraphics[scale = 0.24]{image/SVR8-1-1-To.png}
+    \hspace{0.1cm}\includegraphics[scale = 0.24]{image/SVR7-2-1-To.png}
+    
+    \includegraphics[scale = 0.24]{image/SVR6-2-2-To.png}
+
+DLM:
+
+    \includegraphics[scale = 0.24]{image/DLM8-1-1-F.png}
+    \hspace{0.25cm}\includegraphics[scale = 0.24]{image/DLM7-2-1-F.png}
+    
+    \includegraphics[scale = 0.24]{image/DLM6-2-2-F.png}
+    \hspace{0.13cm}\includegraphics[scale = 0.2655]{image/DLM8-1-1-TSLA.png}
+    
+    \includegraphics[scale = 0.26]{image/DLM7-2-1-TSLA.png}
+    \hspace{0.22cm}\includegraphics[scale = 0.262]{image/DLM6-2-2-TSLA.png}
+    
+    \includegraphics[scale = 0.26]{image/DLM8-1-1-To.png}
+    \hspace{0.2cm}\includegraphics[scale = 0.262]{image/DLM7-2-1-To.png}
+    
+    \includegraphics[scale = 0.26]{image/DLM6-2-2-To.png}
+
+LSTM:
+
+    \includegraphics[scale = 0.265]{image/LSTM8-1-1-F.png}
+    \hspace{0.2cm}\includegraphics[scale = 0.262]{image/LSTM7-2-1-F.png}
+    
+    \includegraphics[scale = 0.265]{image/LSTM6-2-2-F.png}
+    \hspace{0.2cm}\includegraphics[scale = 0.26]{image/LSTM8-1-1-TSLA.png}
+    
+    \includegraphics[scale = 0.26]{image/LSTM7-2-1-TSLA.png}
+    \hspace{0.22cm}\includegraphics[scale = 0.262]{image/LSTM6-2-2-TSLA.png}
+    
+    \includegraphics[scale = 0.26]{image/LSTM8-1-1-To.png}
+    \hspace{0.2cm}\includegraphics[scale = 0.262]{image/LSTM7-2-1-To.png}
+    
+    \includegraphics[scale = 0.26]{image/LSTM6-2-2-To.png}
+
+HOLT:
+
+    \includegraphics[scale = 0.235]{image/HOLT8-1-1-F.png}
+    \hspace{0.2cm}\includegraphics[scale = 0.235]{image/HOLT7-2-1-F.png}
+    
+    \includegraphics[scale = 0.235]{image/HOLT6-2-2-F.png}
+    \hspace{0.2cm}\includegraphics[scale = 0.235]{image/HOLT8-1-1-TSLA.png}
+    
+    \includegraphics[scale = 0.235]{image/HOLT7-2-1-TSLA.png}
+    \hspace{0.22cm}\includegraphics[scale = 0.235]{image/HOLT6-2-2-TSLA.png}
+    
+    \includegraphics[scale = 0.235]{image/HOLT8-1-1-To.png}
+    \hspace{0.2cm}\includegraphics[scale = 0.235]{image/HOLT7-2-1-To.png}
+    
+    \includegraphics[scale = 0.235]{image/HOLT6-2-2-To.png}
+
+2) Evaluation models and discussion:
+
+    \includegraphics[scale = 0.5]{image/evo-F.png}
+ 
+    \includegraphics[scale = 0.48]{image/Evo-TSLA.png}
+    
+    \includegraphics[scale = 0.48]{image/Evo-To.png}
+
+
+\section{Conclusion: }
+
+\subsection{Overall Conclusion}
+
+\hspace{0.3cm}The outcomes of our research underscore the prominence of the DLM, HOLT, and SVR algorithms as exceptionally well-suited methodologies for forecasting future stock prices across three distinct companies: Ford, Tesla, and Toyota. The comprehensive analysis conducted in this study points towards the efficacy and reliability of these algorithms in the context of predicting stock market trends for the aforementioned companies.
+
+\subsection{Challenges Encountered}
+
+\hspace{0.3cm}Despite having delved into the theoretical aspects, we still find ourselves lacking the proficiency to implement GAN-LSTM. Simultaneously, during the execution of LSTM, our evaluation scores are notably higher compared to the average, suggesting that the dataset might not be suitable for this particular model.
+
+Complexity in processing data: The intricacies and diversity inherent in stock market data necessitate the application of precise data processing techniques to ensure the feasibility and accuracy of prediction models.
+
+Developing resilient prediction models: Crafting prediction models for the stock market is a intricate undertaking that requires in-depth knowledge of the domain. We faced crucial decisions, including the selection of algorithms, methods for data preprocessing, and the identification of essential variables for the models.
+
+Assessing model efficacy: We employed a range of algorithmic and statistical indicators to evaluate the performance of the prediction models. Nevertheless, the outcomes suggested that the accuracy of the models remained unsatisfactory.
+
+\subsection{Future Intention}
+
+\hspace{0.3 cm}We will further research the LSTM and GAN models and explore how to integrate these two models. Additionally, we will investigate various models for predicting stock prices in the future, aiming to identify the most suitable models for our specific dataset.
+
+Improving proficiency in data selection and processing: We will persist in researching and applying cutting-edge techniques for the selection and processing of data. This strategy will guarantee the functionality of our prediction models with viable and precise input data.
+
+Utilizing sophisticated prediction models: We will delve into advanced methodologies such as Deep Learning and Reinforcement Learning to construct more intricate and precise prediction models. These models hold the promise of augmenting our overall efficacy in forecasting stock prices.
+
+\subsection*{ACKNOWLEDGMENT}
+
+\hspace{0.3cm}We extend our profound appreciation to Professor Associate Professor Dr. Nguyen Dinh Thuan and Teaching Assistant Nguyen Minh Nhut for their invaluable expertise, dedicated guidance, and unwavering support throughout the duration of this project. Completing this collaborative report would have been an immensely challenging task without their supervision. This project not only provided us with the opportunity to enhance teamwork, collaborative skills, and mutual learning but also allowed us to apply our knowledge to practical, real-life situations.
+
+Throughout the execution of the project, our team leveraged acquired knowledge and delved into new concepts to yield optimal results. Despite our best efforts, we acknowledge that imperfections are inevitable. Consequently, we eagerly anticipate your constructive feedback, which will assist us in refining our understanding and enhancing future endeavors.
+
+Additionally, we wish to express our gratitude to our fellow team members and friends who offered support and contributed to a collective understanding, enabling the successful execution of the project. Our heartfelt thanks go out to everyone who accompanied us on this meaningful journey.
+
+\begin{thebibliography}{00}
+
+\bibitem{b1} Holt Winter’s Method for Time Series Analysis. Available: https://www.analyticsvidhya.com/blog/2021/08/holt-winters-method-for-time-series-analysis/
+\bibitem{b2} Holt-Winters’ seasonal method. Available: https://otexts.com/fpp2/holt-winters.html
+\bibitem{b3} Support Vector Regression Tutorial for Machine Learning. Available: 
+
+https://www.analyticsvidhya.com/blog/2020/03/support-vector-regression-tutorial-for-machine-learning/?fbclid=IwAR0-mBs16gJntNtmqIDdbp0-HnXZVaPOdwBIdDuhUYu9fClk4DUHw-6WhQQ
+\bibitem{b4} Introduction to Dynamic Linear Models. Available: 
+
+https://math.unm.edu/~ghuerta/tseries/dlmch2.pdf
+\bibitem{b5} Dynamic linear model tutorial.Available: 
+
+https://mjlaine.github.io/dlm/dlmtut.html
+
+\bibitem{b6} Introduction to Linear Regression Analysis - Douglas C. Montgomery, Elizabeth A. Peck, G. Geoffrey Vining · 2013.
+
+\bibitem{b7} Linear Regression Analysis: Theory and Computing - Xin Yan, Xiaogang Su · 2009. 
+
+\bibitem{b8} https://www.analyticsvidhya.com/blog/2021/10/everything-you-need-to-know-about-linear-regression/
+
+\bibitem{b9} https://towardsdatascience.com/an-introduction-to-support-vector-regression-svr-a3ebc1672c2
+
+\bibitem{b10} https://www.geeksforgeeks.org/support-vector-regression-svr-using-linear-and-non-linear-kernels-in-scikit-learn/
+
+\bibitem{b11} https://medium.com/@vk.viswa/support-vector-regression-unleashing-the-power-of-non-linear-predictive-modeling-d4495836884
+
+\bibitem{b12} https://medium.com/@niousha.rf/support-vector-regressor-theory-and-coding-exercise-in-python-ca6a7dfda927
+
+\bibitem{b13} https://www.geeksforgeeks.org/deep-learning-introduction-to-long-short-term-memory/
+
+\bibitem{b14} https://www.analyticsvidhya.com/blog/2021/03/introduction-to-long-short-term-memory-lstm/
+
+\bibitem{b15} https://machinelearningmastery.com/lstm-for-time-series-prediction-in-pytorch/
+
+\bibitem{b16} https://www.simplilearn.com/tutorials/artificial-intelligence-tutorial/lstm
+
+\bibitem{b17} https://machinelearningmastery.com/sarima-for-time-series-forecasting-in-python/
+
+\bibitem{b18} https://towardsdatascience.com/time-series-forecasting-with-arima-sarima-and-sarimax-ee61099e78f6
+
+\bibitem{b19} https://medium.com/@meritshot/introduction-to-arima-and-sarima-for-time-series-forecasting-5af5025c8876
+
+\bibitem{b20} https://www.analyticsvidhya.com/blog/2023/06/sarima-model-for-forecasting-currency-exchange-rates/
+
+\bibitem{b21} https://helicaltech.com/seasonal-autoregressive-integrated-moving-average-sarima/
+
+\bibitem{b22} https://otexts.com/fpp2/seasonal-arima.html
+
+\bibitem{b23} https://www.mdpi.com/2079-9292/11/23/3986
+
+\bibitem{b24} https://math.unm.edu/~ghuerta/tseries/dlmch2.pdf
+
+\bibitem{b25} https://arxiv.org/pdf/1903.11309
+
+\bibitem{b26} https://otexts.com/fpp2/holt-winters.html
+
+\bibitem{b27} https://orangematter.solarwinds.com/2019/12/15/holt-winters-forecasting-simplified/
+
+\bibitem{b28} https://towardsdatascience.com/time-series-forecasting-with-holt-winters-b78ffc322f24
+
+\bibitem{b29} https://www.jstor.org/stable/2348687
+
+\end{thebibliography}
+
+
+
+
+
+
+
+
+
+\EOD
+\end{document}
